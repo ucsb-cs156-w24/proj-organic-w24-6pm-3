@@ -1,11 +1,35 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import UsersTable from "main/components/Users/UsersTable";
 import { formatTime } from "main/utils/dateUtils";
 import usersFixtures from "fixtures/usersFixtures";
 import { QueryClient, QueryClientProvider } from "react-query";
 
+const mockedNavigate = jest.fn();
+
+const originalConfirm = window.confirm; //To test the Cancel button
+
+const mockToggleMutation = jest.fn();
+jest.mock('react-query', () => ({
+  ...jest.requireActual('react-query'),
+  useMutation: () => ({
+    mutate: mockToggleMutation,
+  }),
+}));
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockedNavigate
+}));
+
+
 describe("UserTable tests", () => {
     const queryClient = new QueryClient();
+    
+    const testId = "UsersTable";
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
 
     test("renders without crashing for empty table", () => {
         render(
@@ -81,5 +105,52 @@ describe("UserTable tests", () => {
 
         expect(screen.queryByText('toggle-admin')).not.toBeInTheDocument();
         expect(screen.queryByText('toggle-instructor')).not.toBeInTheDocument();
+      });
+
+      test("Confirmation popup appears when toggle-admin button is clicked", async () => {
+        render(
+            <QueryClientProvider client={queryClient}>
+                <UsersTable users={usersFixtures.threeUsers} showToggleButtons={true} />
+            </QueryClientProvider>
+        );
+    
+        // Mock window.confirm to return true, indicating user confirmation
+        window.confirm = jest.fn(() => true);
+    
+        // Find the toggle admin button and click it
+        const toggleAdminButton = screen.getByTestId(`${testId}-cell-row-0-col-toggle-admin-button`);
+        fireEvent.click(toggleAdminButton);
+
+        const prompt = "Are you sure you want to revoke Admin rights?\n\nClick 'OK' to confirm or 'Cancel' to keep your Admin rights active.";
+    
+        // Ensure that window.confirm was called with the appropriate message
+        expect(window.confirm).toHaveBeenCalledWith(prompt);
+    
+        // Ensure that the toggleAdminMutation function was called
+        expect(mockToggleMutation).toHaveBeenCalled();
+        
+      });
+
+      test("toggleAdminMutation is not triggered when confirmation popup is canceled", async () => {
+        render(
+            <QueryClientProvider client={queryClient}>
+                <UsersTable users={usersFixtures.threeUsers} showToggleButtons={true} />
+            </QueryClientProvider>
+        );
+
+        // Find the toggle admin button and click it
+        const toggleAdminButton = screen.getByTestId(`${testId}-cell-row-0-col-toggle-admin-button`);
+        fireEvent.click(toggleAdminButton);
+    
+        window.confirm = jest.fn(() => false); // Mocking window.confirm to return false
+    
+        fireEvent.click(toggleAdminButton);
+    
+        const prompt = "Are you sure you want to revoke Admin rights?\n\nClick 'OK' to confirm or 'Cancel' to keep your Admin rights active.";
+    
+        // Ensure that window.confirm was called with the appropriate message
+        expect(window.confirm).toHaveBeenCalledWith(prompt);
+
+        expect(mockToggleMutation).not.toHaveBeenCalled();
       });
 });
