@@ -63,11 +63,6 @@ public class UsersController extends ApiController {
         User user = userRepository.findByGithubId(githubId)
         .orElseThrow(() -> new EntityNotFoundException(User.class, githubId));
 
-        User currUser = super.getCurrentUser().getUser();
-        if (currUser.getGithubId().equals(githubId)) {
-            return genericMessage("User cannot revoke their own admin privileges.".formatted(githubId, user.isAdmin()));
-        }
-
         user.setAdmin(!user.isAdmin());
         userRepository.save(user);
         return genericMessage("User with githubId %s has toggled admin status to %s".formatted(githubId, user.isAdmin()));

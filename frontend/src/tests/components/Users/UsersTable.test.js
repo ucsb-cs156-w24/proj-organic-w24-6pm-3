@@ -6,8 +6,6 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 const mockedNavigate = jest.fn();
 
-const originalConfirm = window.confirm; //To test the Cancel button
-
 const mockToggleMutation = jest.fn();
 jest.mock('react-query', () => ({
   ...jest.requireActual('react-query'),
