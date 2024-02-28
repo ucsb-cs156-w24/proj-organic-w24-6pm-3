@@ -37,6 +37,10 @@ describe("AdminUsersPage tests",  () => {
     });
 
     test("user table toggle admin tests", async ()=>{
+
+        // Mock window.confirm
+        jest.spyOn(window, 'confirm').mockImplementation(() => true);
+
         axiosMock.onPost("/api/admin/users/toggleAdmin").reply(200, "User with id 1 has toggled admin status");
         render(
             <QueryClientProvider client={queryClient}>
@@ -56,6 +60,8 @@ describe("AdminUsersPage tests",  () => {
         await waitFor(() => expect(axiosMock.history.post.length).toBe(1));
         expect(axiosMock.history.post[0].url).toBe("/api/admin/users/toggleAdmin");
         expect(axiosMock.history.post[0].params).toEqual({githubId:11111});
+
+        window.confirm.mockRestore();
     });
 
     test("user table toggle instructor tests", async ()=>{
