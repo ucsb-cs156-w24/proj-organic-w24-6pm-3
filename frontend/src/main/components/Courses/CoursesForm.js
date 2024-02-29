@@ -132,7 +132,7 @@ function CoursesForm({ initialContents, submitAction, buttonLabel = "Create" }) 
                             })}
                         />
                         <Form.Control.Feedback type="invalid">
-                        {errors.startDate && 'EndDate date is required. '}
+                        {errors.endDate && 'EndDate date is required. '}
                         {errors.endDate?.message}
                         </Form.Control.Feedback>
                     </Form.Group>
