@@ -1,4 +1,4 @@
-import { padWithZero, timestampToDate, daysSinceTimestamp, formatTime } from "main/utils/dateUtils";
+import { daysSinceTimestamp, formatTime, padWithZero, timestampToDate } from "main/utils/dateUtils";
 
 
 describe("dateUtils tests", () => {
@@ -70,6 +70,24 @@ describe("dateUtils tests", () => {
     it('should return date string for over a week', () => {
       const twoWeeksAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
       expect(formatTime(twoWeeksAgo.toISOString())).toEqual(twoWeeksAgo.toLocaleDateString());
+    });
+
+  
+    it('should correctly handle float timestamp', () => {
+      jest.useFakeTimers().setSystemTime(new Date('2024-02-29T08:05:01.651Z'));
+      const floatTimestamp = (new Date('2024-02-29T08:00:01.651Z').getTime()) / 1000;
+      expect(formatTime(floatTimestamp)).toEqual('5 minutes ago');
+    });
+  
+    it('should correctly handle ISO 8601 date strings', () => {
+      jest.useFakeTimers().setSystemTime(new Date('2024-02-29T10:05:01.651Z'));
+      const isoDate = '2024-02-29T08:05:01.651Z';
+      expect(formatTime(isoDate)).toEqual('2 hours ago');
+    });
+  
+    it('should return "Invalid date" for incorrect input', () => {
+      const invalidInput = 'not a date';
+      expect(formatTime(invalidInput)).toEqual('Invalid date');
     });
   })
 });
