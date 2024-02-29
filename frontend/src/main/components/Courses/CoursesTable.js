@@ -13,6 +13,10 @@ import React from "react";
          navigate(`/courses/edit/${cell.row.values.id}`);
      };
 
+     const joinCallback = (cell) => {
+        navigate(`/courses/join/${cell.row.values.id}`); //JOIN
+    };
+
      // Stryker disable all : hard to test for query caching
 
      const deleteMutation = useBackendMutation(
@@ -55,8 +59,10 @@ import React from "react";
              accessor: 'githubOrg',
          },
      ];
+        columns.push(ButtonColumn("Join", "primary", joinCallback, "CoursesTable")); //JOIN
 
      if (hasRole(currentUser, "ROLE_ADMIN") || hasRole(currentUser, "ROLE_INSTRUCTOR")) {
+         //columns.push(ButtonColumn("Join", "primary", joinCallback, "CoursesTable")); //JOIN
          columns.push(ButtonColumn("Edit", "primary", editCallback, "CoursesTable"));
          columns.push(ButtonColumn("Delete", "danger", deleteCallback, "CoursesTable"));
      }
