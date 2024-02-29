@@ -90,4 +90,23 @@ describe("dateUtils tests", () => {
       expect(formatTime(invalidInput)).toEqual('Invalid date');
     });
   })
+  
+  describe("formatTime float timestamp detection tests", () => {
+    it('should correctly differentiate between float and non-float numeric strings', () => {
+      jest.useFakeTimers().setSystemTime(new Date('2024-02-29T10:05:01.651Z'));
+      
+      // Float timestamp (as a string) that represents a specific time
+      const floatTimestampString = "1614681600.5"; // Equivalent to some specific date and time
+      expect(formatTime(floatTimestampString)).not.toEqual('Invalid date');
+  
+      // Numeric string without decimal, which should not be treated as a valid timestamp in seconds
+      const numericStringWithoutDecimal = "16146816005"; // A large number, potentially a timestamp in milliseconds or an error
+      expect(formatTime(numericStringWithoutDecimal)).toEqual('Invalid date');
+  
+      // Test with an input that does not include a period (decimal point) to ensure the logic for detecting float timestamps is exercised
+      const stringWithoutPeriod = "This is not a timestamp";
+      expect(formatTime(stringWithoutPeriod)).toEqual('Invalid date');
+    });
+  });
+  
 });
