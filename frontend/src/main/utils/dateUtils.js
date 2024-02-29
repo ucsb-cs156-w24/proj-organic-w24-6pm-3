@@ -23,8 +23,16 @@ export function formatTime(timeString) {
         return "";
     }
 
+    // Check if timeString is a float (timestamp) or ISO 8601 date string
+    const isFloatTimestamp = !isNaN(timeString) && timeString.toString().indexOf('.') !== -1;
+    const timestamp = isFloatTimestamp ? Number(timeString) * 1000 : Date.parse(timeString);
+
+    if (isNaN(timestamp)) {
+        return "Invalid date"; // or handle invalid input as you see fit
+    }
+
     const now = new Date();
-    const dateFromEpoch = new Date(timeString);
+    const dateFromEpoch = new Date(timestamp);
     const secondsPast = Math.floor((now - dateFromEpoch) / 1000);
 
     if (secondsPast < minutesInSeconds * 2) {
@@ -32,21 +40,23 @@ export function formatTime(timeString) {
     }
 
     if (secondsPast < hourInSeconds) {
-        const minutes = Math.floor(secondsPast / 60);
+        const minutes = Math.floor(secondsPast / minutesInSeconds);
         return `${minutes} minutes ago`;
     }
 
     if (secondsPast < dayInSeconds) {
-        const hours = Math.floor(secondsPast / 3600);
+        const hours = Math.floor(secondsPast / hourInSeconds);
         return `${hours} hour${hours > 1 ? 's' : ''} ago`;
     }
     
     if (secondsPast < weekInSeconds) {
-        const days = Math.floor(secondsPast / 86400);
+        const days = Math.floor(secondsPast / dayInSeconds);
         return `${days} day${days > 1 ? 's' : ''} ago`;
     }
 
     return dateFromEpoch.toLocaleDateString();
 }
 
-export {timestampToDate, padWithZero, daysSinceTimestamp};
+
+export { daysSinceTimestamp, padWithZero, timestampToDate };
+
