@@ -116,31 +116,6 @@ describe("CoursesForm tests", () => {
 
 
 
-// test("bad input", async()=>{
 
-//     render(
-//         <Router  >
-//             <CoursesForm />
-//         </Router>
-//     );
-//     document.getElementById('dateForm').addEventListener('submit', function(event) {
-//         // Get user's input from the form
-//         var startDateTimeString = document.getElementById('startDate').value;
-//         var endDateTimeString = document.getElementById('endDate').value;
-    
-//         // Convert user's input to Date objects
-//         var startDateTime = new Date(startDateTimeString);
-//         var endDateTime = new Date(endDateTimeString);
-    
-//         // Compare the start date with the end date
-//         if (endDateTime <= startDateTime) {
-//             // If end date is before or the same as start date, prevent form submission and show error
-//             event.preventDefault(); // Prevent form submission
-//             document.getElementById('errorMessage').style.display = 'block'; // Show error message
-//         } else {
-//             // If end date is after start date, allow form submission
-//             document.getElementById('errorMessage').style.display = 'none'; // Hide error message
-//         }
-//     });
     
 });
