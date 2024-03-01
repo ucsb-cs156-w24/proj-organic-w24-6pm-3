@@ -156,7 +156,7 @@ describe("CourseIndexPage tests", () => {
             </QueryClientProvider>
         );
         
-        const createButton = screen.queryByText("Create Courses");
+        const createButton = screen.queryByText("Create Course");
         expect(createButton).not.toBeInTheDocument();
         // assert
         await waitFor(() => { expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1"); });
