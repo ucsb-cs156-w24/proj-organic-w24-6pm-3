@@ -27,8 +27,6 @@ export default function UsersTable({ currentUser, users, showToggleButtons = fal
 
     // Stryker disable next-line all : TODO try to make a good test for this
     const toggleAdminCallback = async(cell) => { 
-        console.log(currentUser);
-        console.log(cell);
         if(currentUser.root.user.githubId === cell.row.values.githubId) {
             const confirmation = window
                                 .confirm("Are you sure you want to revoke your own Admin rights?\n\nClick 'OK' to confirm or 'Cancel' to keep your Admin rights active.");
