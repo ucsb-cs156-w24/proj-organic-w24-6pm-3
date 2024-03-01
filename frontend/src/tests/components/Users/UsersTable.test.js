@@ -108,7 +108,7 @@ describe("UserTable tests", () => {
         expect(screen.queryByText('toggle-instructor')).not.toBeInTheDocument();
       });
 
-      test("Confirmation popup does not appear when admin clicks other admin's toggle-admin button", async () => {
+      test("Correct confirmation popup appears when admin toggles other admin's toggle-admin button", async () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <UsersTable currentUser = { currentUser } users={usersFixtures.threeUsers} showToggleButtons={true} />
@@ -122,13 +122,13 @@ describe("UserTable tests", () => {
         const toggleAdminButton = screen.getByTestId(`${testId}-cell-row-0-col-toggle-admin-button`);
         fireEvent.click(toggleAdminButton);
 
-        const prompt = "Are you sure you want to revoke your own Admin rights?\n\nClick 'OK' to confirm or 'Cancel' to keep your Admin rights active.";
+        const prompt = "Are you sure you want to revoke user's Admin rights?\n\nClick 'OK' to confirm or 'Cancel' to keep user's Admin rights active.";
     
         // Ensure that window.confirm was called with the appropriate message
-        expect(window.confirm).not.toHaveBeenCalledWith(prompt);
+        expect(window.confirm).toHaveBeenCalledWith(prompt);
     
         // Ensure that the toggleAdminMutation function was called
-        expect(mockToggleMutation).toHaveBeenCalled();
+        expect(mockToggleMutation).not.toHaveBeenCalled();
         
       });
 
