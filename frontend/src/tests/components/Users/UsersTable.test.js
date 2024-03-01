@@ -132,7 +132,7 @@ describe("UserTable tests", () => {
         
       });
 
-      test("Confirmation popup appears when admin their own toggle-admin button", async () => {
+      test("Confirmation popup appears when admin toggles their own toggle-admin button", async () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <UsersTable currentUser = { currentUser } users={usersFixtures.threeUsers} showToggleButtons={true} />
@@ -176,6 +176,77 @@ describe("UserTable tests", () => {
     
         // Ensure that the toggleAdminMutation function was called
         expect(mockToggleMutation).not.toHaveBeenCalled();
+        
+      });
+
+      test("Confirmation popup appears when admin toggles toggle-instructor button", async () => {
+        render(
+            <QueryClientProvider client={queryClient}>
+                <UsersTable currentUser = { currentUser } users={usersFixtures.threeUsers} showToggleButtons={true} />
+            </QueryClientProvider>
+        );
+
+        // Find the toggle admin button and click it
+        const toggleInstructorButton = screen.getByTestId(`${testId}-cell-row-0-col-toggle-instructor-button`);
+        fireEvent.click(toggleInstructorButton);
+    
+        window.confirm = jest.fn(() => true); // Mocking window.confirm to return true
+    
+        fireEvent.click(toggleInstructorButton);
+    
+        const prompt = "Are you sure you want to modify Instructor role?\n\nClick 'OK' to confirm or 'Cancel' to keep current role.";
+    
+        // Ensure that window.confirm was called with the appropriate message
+        expect(window.confirm).toHaveBeenCalledWith(prompt);
+
+        expect(mockToggleMutation).toHaveBeenCalled();
+      });
+
+    test("mockToggleMutation for toggle-instructor-button is not called when admin does not confirm", async () => {
+        render(
+            <QueryClientProvider client={queryClient}>
+                <UsersTable currentUser = { currentUser } users={usersFixtures.threeUsers} showToggleButtons={true} />
+            </QueryClientProvider>
+        );
+    
+        // Mock window.confirm to return true, indicating user confirmation
+        window.confirm = jest.fn(() => false);
+    
+        // Find the toggle instructor button and click it
+        const toggleInstructorButton = screen.getByTestId(`${testId}-cell-row-0-col-toggle-instructor-button`);
+        fireEvent.click(toggleInstructorButton);
+
+        const prompt = "Are you sure you want to modify Instructor role?\n\nClick 'OK' to confirm or 'Cancel' to keep current role.";
+    
+        // Ensure that window.confirm was called with the appropriate message
+        expect(window.confirm).toHaveBeenCalledWith(prompt);
+
+        // Ensure that the toggleInstructorMutation function was called
+        expect(mockToggleMutation).not.toHaveBeenCalled();
+        
+      });
+
+      test("mockToggleMutation for toggle-instructor-button is called when admin does confirm", async () => {
+        render(
+            <QueryClientProvider client={queryClient}>
+                <UsersTable currentUser = { currentUser } users={usersFixtures.threeUsers} showToggleButtons={true} />
+            </QueryClientProvider>
+        );
+    
+        // Mock window.confirm to return true, indicating user confirmation
+        window.confirm = jest.fn(() => true);
+    
+        // Find the toggle instructor button and click it
+        const toggleInstructorButton = screen.getByTestId(`${testId}-cell-row-0-col-toggle-instructor-button`);
+        fireEvent.click(toggleInstructorButton);
+
+        const prompt = "Are you sure you want to modify Instructor role?\n\nClick 'OK' to confirm or 'Cancel' to keep current role.";
+    
+        // Ensure that window.confirm was called with the appropriate message
+        expect(window.confirm).toHaveBeenCalledWith(prompt);
+
+        // Ensure that the toggleInstructorMutation function was called
+        expect(mockToggleMutation).toHaveBeenCalled();
         
       });
 });

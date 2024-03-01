@@ -60,7 +60,13 @@ export default function UsersTable({ currentUser, users, showToggleButtons = fal
     // Stryker restore all 
 
     // Stryker disable next-line all : TODO try to make a good test for this
-    const toggleInstructorCallback = async(cell) => { toggleInstructorMutation.mutate(cell); }
+    const toggleInstructorCallback = async(cell) => { 
+        const confirmation = window
+                            .confirm("Are you sure you want to modify Instructor role?\n\nClick 'OK' to confirm or 'Cancel' to keep current role.");
+        if (confirmation) {
+            toggleInstructorMutation.mutate(cell);
+        } 
+    }
 
     const columns = [
         {

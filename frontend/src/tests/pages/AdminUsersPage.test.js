@@ -66,6 +66,9 @@ describe("AdminUsersPage tests",  () => {
 
     test("user table toggle instructor tests", async ()=>{
         axiosMock.onPost("/api/admin/users/toggleInstructor").reply(200, "User with id 1 has toggled instructor status");
+
+        // Mock window.confirm
+        jest.spyOn(window, 'confirm').mockImplementation(() => true);
         
         render(
             <QueryClientProvider client={queryClient}>
@@ -85,5 +88,7 @@ describe("AdminUsersPage tests",  () => {
         await waitFor(() => expect(axiosMock.history.post.length).toBe(1));
         expect(axiosMock.history.post[0].url).toBe("/api/admin/users/toggleInstructor");
         expect(axiosMock.history.post[0].params).toEqual({githubId:11111});
+
+        window.confirm.mockRestore();
     });
 });
