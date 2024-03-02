@@ -6,6 +6,7 @@ import LoadingPage from "main/pages/LoadingPage";
 import LoginPage from "main/pages/LoginPage";
 import ProfilePage from "main/pages/ProfilePage";
 import CoursesEditPage from "main/pages/CoursesEditPage";
+import StaffIndexPage  from "main/pages/StaffIndexPage";
 
 import AdminUsersPage from "main/pages/AdminUsersPage";
 import AdminJobsPage from "main/pages/AdminJobsPage";
@@ -31,9 +32,10 @@ function App() {
       <Route path="/profile" element={<ProfilePage />} />
     </>
   ) : null;
+
   const staffRoutes = hasRole(currentUser, "ROLE_USER") ? (
     <>
-      <Route path="/staff/all" element={<ProfilePage />} />
+      <Route path="/staff/all" element={<StaffIndexPage />} />
     </>
   ) : null;
 
