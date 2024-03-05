@@ -33,18 +33,14 @@ function App() {
     </>
   ) : null;
 
-  // const staffRoutes = hasRole(currentUser, "ROLE_USER") ? (
-  //   <>
-  //     <Route path="/course/staff/all" element={<StaffIndexPage />} />
-  //   </>
-  // ) : null;
+ 
 
   const courseRoutes = (hasRole(currentUser, "ROLE_ADMIN") || hasRole(currentUser, "ROLE_INSTRUCTOR")) ? (
     <>
       <Route path="/courses/create" element={<CoursesCreatePage />} />
       <Route path="/courses" element={<CourseIndexPage />} />
       <Route path="/courses/edit/:id" element={<CoursesEditPage />} />
-      <Route path="/courses/getStaff" element={<StaffIndexPage />} />
+      <Route path="/course/staff/all" element={<StaffIndexPage />} />
     </>
   ) : null;
 
