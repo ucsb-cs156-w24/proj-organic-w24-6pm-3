@@ -35,7 +35,7 @@ function App() {
 
   // const staffRoutes = hasRole(currentUser, "ROLE_USER") ? (
   //   <>
-  //     <Route path="/staff/all" element={<StaffIndexPage />} />
+  //     <Route path="/getStaff" element={<StaffIndexPage />} />
   //   </>
   // ) : null;
 
@@ -44,6 +44,7 @@ function App() {
       <Route path="/courses/create" element={<CoursesCreatePage />} />
       <Route path="/courses" element={<CourseIndexPage />} />
       <Route path="/courses/edit/:id" element={<CoursesEditPage />} />
+      {/* <Route path="/courses/getStaff" element={<StaffIndexPage />} /> */}
     </>
   ) : null;
 
