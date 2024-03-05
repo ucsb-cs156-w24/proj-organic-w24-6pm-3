@@ -1,5 +1,4 @@
-import React from "react";
-import OurTable, { ButtonColumn } from "main/components/OurTable"
+import OurTable, { ButtonColumn } from "main/components/OurTable";
 import { formatTime } from "main/utils/dateUtils";
 import { useBackendMutation } from "main/utils/useBackend";
 
@@ -21,7 +20,7 @@ export default function UsersTable({ users, showToggleButtons = false }) {
         {},
         ["/api/admin/users"]
     );
-    // Stryker restore all 
+    // Stryker restore all
 
     // Stryker disable next-line all : TODO try to make a good test for this
     const toggleAdminCallback = async(cell) => { toggleAdminMutation.mutate(cell); }
@@ -85,7 +84,8 @@ export default function UsersTable({ users, showToggleButtons = false }) {
     const buttonColumn = [
         ...columns,
         ButtonColumn("toggle-admin", "primary", toggleAdminCallback, "UsersTable"),
-        ButtonColumn("toggle-instructor", "primary", toggleInstructorCallback, "UsersTable")
+        ButtonColumn("toggle-instructor", "primary", toggleInstructorCallback, "UsersTable"),
+        
     ]
     return <OurTable
         data={users}

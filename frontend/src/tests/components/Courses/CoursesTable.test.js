@@ -1,9 +1,9 @@
-import CoursesTable from "main/components/Courses/CoursesTable"
-import { fireEvent, render, waitFor, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { coursesFixtures } from "fixtures/coursesFixtures";
+import { currentUserFixtures } from "fixtures/currentUserFixtures";
+import CoursesTable from "main/components/Courses/CoursesTable";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
-import { currentUserFixtures } from "fixtures/currentUserFixtures";
 
 
 const mockedNavigate = jest.fn();
@@ -148,6 +148,34 @@ describe("UserTable tests", () => {
     await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith('/courses/edit/1'));
 
   });
+
+
+  test("Staff button navigates to the staff page for an admin user", async () => {
+    // Mock useNavigate
+
+
+    const currentUser = currentUserFixtures.adminUser;
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+            <CoursesTable courses={coursesFixtures.threeCourses} currentUser={currentUser} />
+        </MemoryRouter>
+      </QueryClientProvider>
+    );
+
+    // Verify the table loads correctly
+    await waitFor(() => { expect(screen.getByTestId(`CoursesTable-cell-row-0-col-id`)).toHaveTextContent("1"); });
+
+    // Find and click the Staff button
+    const staffButton = screen.getByTestId(`CoursesTable-cell-row-0-col-Staff-button`);
+    expect(staffButton).toBeInTheDocument();
+    fireEvent.click(staffButton);
+
+    // Check if navigate was called with the correct path
+    await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith('/courses/1/staff'));
+  });
+  
 
 
   test("Delete button calls the callback", async () => {
