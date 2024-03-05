@@ -14,9 +14,9 @@ export default function StaffIndexPage() {
   const { data: staff, error: _error, status: _status } =
     useBackend(
       // Stryker disable next-line all : don't test internal caching of React Query
-      ["/api/getStaff"],
+      ["/api/course/staff/all"],
       // Stryker disable next-line all : GET is the default
-      { method: "GET", url: "/api/getStaff" },
+      { method: "GET", url: "/api/course/staff/all" },
       
     );
 

@@ -7,6 +7,7 @@ import React from "react";
 
  export default function StaffTable({ staff }) {
 
+    // const navigate = useNavigate();
 
 
      const columns = [
