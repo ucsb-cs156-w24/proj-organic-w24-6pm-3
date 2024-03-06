@@ -8,13 +8,15 @@ function CoursesForm({ initialContents, submitAction, buttonLabel = "Create" }) 
     const {
         register,
         formState: { errors },
+        watch,
         handleSubmit,
     } = useForm(
         { defaultValues: initialContents || {}, }
     );
-    // Stryker restore all
 
     const navigate = useNavigate();
+
+
 
     // Stryker disable next-line Regex
     const isodate_regex = /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+)|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d)|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d)/i;
@@ -116,10 +118,22 @@ function CoursesForm({ initialContents, submitAction, buttonLabel = "Create" }) 
                             id="endDate"
                             type="datetime-local"
                             isInvalid={Boolean(errors.endDate)}
-                            {...register("endDate", { required: true, pattern: isodate_regex })}
+                            {...register("endDate", { 
+                                required: "End date is required", 
+                                pattern: {
+                                    value: isodate_regex,
+                                    message: "Invalid date format for end date."
+                                },
+                                validate: {
+                                    isAfterStartDate: value => 
+                                        new Date(value) > new Date(watch("startDate")) || "End date must be after the Start date."
+                                } 
+
+                            })}
                         />
                         <Form.Control.Feedback type="invalid">
-                            {errors.endDate && 'EndDate date is required. '}
+                        {errors.endDate && 'EndDate date is required. '}
+                        {errors.endDate?.message}
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
