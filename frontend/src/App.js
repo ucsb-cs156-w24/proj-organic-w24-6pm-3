@@ -32,6 +32,11 @@ function App() {
       <Route path="/profile" element={<ProfilePage />} />
     </>
   ) : null;
+  // const staffRoute = hasRole(currentUser, "ROLE_USER") ? (
+  //   <>
+  //     <Route path="/course/staff/all" element={<ProfilePage />} />
+  //   </>
+  // ) : null;
 
  
 
