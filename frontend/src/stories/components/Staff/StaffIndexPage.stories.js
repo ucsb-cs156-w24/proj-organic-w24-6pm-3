@@ -54,12 +54,12 @@ ThreeItemsAdminUser.parameters = {
         rest.get('/api/systemInfo', (_req, res, ctx) => {
             return res(ctx.json(systemInfoFixtures.showingNeither));
         }),
-        rest.get('/api/UCSBDiningCommonsMenuItem/all', (_req, res, ctx) => {
+        rest.get('/api/courses/{courseId}/staff', (_req, res, ctx) => {
             return res(ctx.json(staffFixtures.threeStaff));
         }),
-        rest.delete('/api/courses/{courseId}/staff', (req, res, ctx) => {
-            window.alert("DELETE: " + JSON.stringify(req.url));
-            return res(ctx.status(200),ctx.json({}));
-        }),
+        // rest.delete('/api/courses/{courseId}/staff', (req, res, ctx) => {
+        //     window.alert("DELETE: " + JSON.stringify(req.url));
+        //     return res(ctx.status(200),ctx.json({}));
+        // }),
     ],
 }
