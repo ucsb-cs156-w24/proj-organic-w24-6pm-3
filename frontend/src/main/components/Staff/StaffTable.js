@@ -1,10 +1,10 @@
 import React from "react";
+// import OurTable, { ButtonColumn } from "main/components/OurTable";
 import OurTable from "main/components/OurTable";
-
 // import { useBackendMutation } from "main/utils/useBackend";
-// import { cellToAxiosParamsDelete, onDeleteSuccess } from "../Utils/StaffUtils";
+// import { cellToAxiosParamsDelete, onDeleteSuccess } from "main/utils/StaffUtils";
 // import { useNavigate } from "react-router-dom";
-// import { hasRole } from "main/utils/currentUser";
+// import { hasRole, useCurrentUser } from "main/utils/currentUser";
 
 export default function StaffTable({ staff }) {
 
@@ -45,6 +45,11 @@ export default function StaffTable({ staff }) {
             accessor: 'userId',
         }
     ];
+
+    // if (hasRole(useCurrentUser, "ROLE_ADMIN")) {
+    //     columns.push(ButtonColumn("Edit", "primary", editCallback, "StaffTable"));
+    //     columns.push(ButtonColumn("Delete", "danger", deleteCallback, "StaffTable"));
+    // } 
  
 
     return <OurTable
