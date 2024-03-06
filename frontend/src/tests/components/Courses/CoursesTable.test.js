@@ -123,6 +123,10 @@ describe("UserTable tests", () => {
     expect(deleteButton).toBeInTheDocument();
     expect(deleteButton).toHaveClass("btn-danger");
 
+    const staffButton = screen.getByTestId(`${testId}-cell-row-0-col-Staff-button`);
+    expect(staffButton).toBeInTheDocument();
+    expect(staffButton).toHaveClass("btn-danger");
+
   });
 
   test("Edit button navigates to the edit page for admin user", async () => {
