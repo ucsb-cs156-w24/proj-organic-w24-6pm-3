@@ -94,6 +94,35 @@ const usersFixtures = {
                 }
             ],
             "lastOnline": "2023-11-09T21:06:11.131913Z"
+        },
+        {
+            "githubId": 1119017,
+            "githubNodeId": "MDQ6VXNlcjExMTkwMTc=",
+            "githubLogin": "pconrad",
+            "email": "pconrad@cs.ucsb.edu",
+            "pictureUrl": "https://avatars.githubusercontent.com/u/1119017?v=4",
+            "fullName": "Phill Conrad",
+            "emailVerified": true,
+            "admin": true,
+            "instructor": false,
+            "accessToken": "ghu_Du4W9ThisIsNotARealTokenXyzska1w9SuT",
+            "emails": [{
+                "email": "pconrad@cs.ucsb.edu",
+                "githubId": 1119017
+            },
+            {
+                "email": "pconrad.cis@gmail.com",
+                "githubId": 1119017
+            },
+            {
+                "email": "pconrad@engineering.ucsb.edu",
+                "githubId": 1119017
+            },
+            {
+                "email": "pconrad@engr.ucsb.edu",
+                "githubId": 1119017
+            }],
+            "lastOnline": "2023-11-09T21:06:11.131913Z"
         }
     ]
 }
