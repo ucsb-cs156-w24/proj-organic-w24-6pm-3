@@ -1,10 +1,11 @@
-// import CoursesTable from "main/components/Courses/CoursesTable"
-import StaffTable from "main/components/Staff/StaffTable";
-import {  render,  screen } from "@testing-library/react";
+
+import StaffTable from "main/components/Staff/StaffTable"
+import { currentUserFixtures } from "fixtures/currentUserFixtures";
+// import { fireEvent, render, waitFor, screen } from "@testing-library/react";
+import {  render, screen } from "@testing-library/react";
 import { staffFixtures } from "fixtures/staffFixtures";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
-import { currentUserFixtures } from "fixtures/currentUserFixtures";
 
 
 const mockedNavigate = jest.fn();
@@ -14,8 +15,11 @@ jest.mock('react-router-dom', () => ({
     useNavigate: () => mockedNavigate
 }));
 
-describe("UserTable tests", () => {
+describe("StaffTable tests", () => {
   const queryClient = new QueryClient();
+  const expectedHeaders = ["id", "courseId", "userId"];
+  const expectedFields = ["id", "courseId", "userId"]; 
+  const testId = "StaffTable";
 
   test("Has the expected column headers and content for ordinary user", () => {
 
@@ -30,9 +34,17 @@ describe("UserTable tests", () => {
 
     );
 
-    const expectedHeaders = ["id", "courseId", "userId"];
-    const expectedFields = ["id", "courseId", "userId"];
-    const testId = "StaffTable";
+    const expectedStaffuserId = staffFixtures.threeStaff;
+    expectedStaffuserId.forEach((staffMember, index) => {
+      const userId = screen.getByTestId(`StaffTable-cell-row-${index}-col-userId`);
+      expect(userId).toHaveTextContent(staffMember.userId);
+    });
+
+    const expectedStaffcourse = staffFixtures.threeStaff;
+    expectedStaffcourse.forEach((staffMember, index) => {
+      const courseIdCell = screen.getByTestId(`StaffTable-cell-row-${index}-col-courseId`);
+      expect(courseIdCell).toHaveTextContent(staffMember.courseId);
+    });
 
     expectedHeaders.forEach((headerText) => {
       const header = screen.getByText(headerText);
@@ -47,11 +59,13 @@ describe("UserTable tests", () => {
     expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1");
     expect(screen.getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("2");
 
-    // const editButton = screen.queryByTestId(`${testId}-cell-row-0-col-Edit-button`);
-    // expect(editButton).not.toBeInTheDocument();
 
-    // const deleteButton = screen.queryByTestId(`${testId}-cell-row-0-col-Delete-button`);
-    // expect(deleteButton).not.toBeInTheDocument();
+
+    const editButton = screen.queryByTestId(`${testId}-cell-row-0-col-Edit-button`);
+    expect(editButton).not.toBeInTheDocument();
+
+    const deleteButton = screen.queryByTestId(`${testId}-cell-row-0-col-Delete-button`);
+    expect(deleteButton).not.toBeInTheDocument();
 
   });
 
@@ -60,18 +74,17 @@ describe("UserTable tests", () => {
     // arrange
     const currentUser = currentUserFixtures.adminUser;
 
-    const expectedHeaders = ["id", "courseId", "userId"];
-    const expectedFields = ["id", "courseId", "userId"];
-    const testId = "StaffTable";
 
     // act
     render(
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter>
+        <QueryClientProvider client={queryClient}>
+          <MemoryRouter>
           <StaffTable staff={[]} currentUser={currentUser} />
         </MemoryRouter>
       </QueryClientProvider>
     );
+
+
 
     // assert
     expectedHeaders.forEach((headerText) => {
@@ -99,9 +112,6 @@ describe("UserTable tests", () => {
 
     );
 
-    const expectedHeaders = ["id", "courseId", "userId"];
-    const expectedFields = ["id", "courseId", "userId"];
-    const testId = "StaffTable";
 
     expectedHeaders.forEach((headerText) => {
       const header = screen.getByText(headerText);
@@ -116,8 +126,23 @@ describe("UserTable tests", () => {
     expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1");
     expect(screen.getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("2");
 
+    // const deleteButton = screen.getByTestId(`${testId}-cell-row-0-col-Delete-button`);
+    // expect(deleteButton).toBeInTheDocument();
+    // expect(deleteButton).toHaveClass("btn-danger");
 
   });
 
-  
+
+
+
+
+
 });
+
+
+
+
+
+
+
+
