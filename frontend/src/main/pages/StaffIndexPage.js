@@ -10,19 +10,19 @@ export default function StaffIndexPage() {
 
   const { data: currentUser } = useCurrentUser();
 
-  const deleteButton = () => {  
+  // const deleteButton = () => {  
     
-      return (
-          <Button
-              variant="primary"
-              href="/courses/staff"
-              style={{ float: "right" }}
-          >
-              Delete Staff 
-          </Button>
-      )
+  //     return (
+  //         <Button
+  //             variant="primary"
+  //             href="/courses/staff"
+  //             style={{ float: "right" }}
+  //         >
+  //             Delete Staff 
+  //         </Button>
+  //     )
     
-  }
+  // }
   
   const { data: staff, error: _error, status: _status } =
     useBackend(
