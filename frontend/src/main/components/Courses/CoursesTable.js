@@ -15,6 +15,10 @@ import { useNavigate } from "react-router-dom";
         navigate(`/courses/${cell.row.values.id}/staff`);
     };
 
+     const joinCallback = (cell) => {
+        navigate(`/courses/join/${cell.row.values.id}`); //JOIN
+    };
+
      // Stryker disable all : hard to test for query caching
 
      const deleteMutation = useBackendMutation(
@@ -57,8 +61,10 @@ import { useNavigate } from "react-router-dom";
              accessor: 'githubOrg',
          },
      ];
+        columns.push(ButtonColumn("Join", "primary", joinCallback, "CoursesTable")); //JOIN
 
      if (hasRole(currentUser, "ROLE_ADMIN") || hasRole(currentUser, "ROLE_INSTRUCTOR")) {
+         //columns.push(ButtonColumn("Join", "primary", joinCallback, "CoursesTable")); //JOIN
          columns.push(ButtonColumn("Edit", "primary", editCallback, "CoursesTable"));
          columns.push(ButtonColumn("Delete", "danger", deleteCallback, "CoursesTable"));
          columns.push(ButtonColumn("Staff", "danger", staffCallback, "CoursesTable"));

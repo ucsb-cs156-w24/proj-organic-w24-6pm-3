@@ -46,6 +46,9 @@ describe("UserTable tests", () => {
     expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1");
     expect(screen.getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("2");
 
+    const joinButton = screen.queryByTestId(`${testId}-cell-row-0-col-Join-button`);
+    expect(joinButton).toBeInTheDocument(); //JOIN
+
     const editButton = screen.queryByTestId(`${testId}-cell-row-0-col-Edit-button`);
     expect(editButton).not.toBeInTheDocument();
 
@@ -115,6 +118,10 @@ describe("UserTable tests", () => {
     expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1");
     expect(screen.getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("2");
 
+    const joinButton = screen.getByTestId(`${testId}-cell-row-0-col-Join-button`);
+    expect(joinButton).toBeInTheDocument();
+    expect(joinButton).toHaveClass("btn-primary"); //JOIN
+
     const editButton = screen.getByTestId(`${testId}-cell-row-0-col-Edit-button`);
     expect(editButton).toBeInTheDocument();
     expect(editButton).toHaveClass("btn-primary");
@@ -128,6 +135,31 @@ describe("UserTable tests", () => {
     expect(staffButton).toHaveClass("btn-danger");
 
   });
+  
+  test("Join button navigates to the join page for any user", async () => { //JOIN 
+
+    const currentUser = currentUserFixtures.userOnly;
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+            <CoursesTable courses={coursesFixtures.threeCourses} currentUser={currentUser} />
+        </MemoryRouter>
+      </QueryClientProvider>
+
+    );
+
+    await waitFor(() => { expect(screen.getByTestId(`CoursesTable-cell-row-0-col-id`)).toHaveTextContent("1"); });
+
+    const joinButton = screen.getByTestId(`CoursesTable-cell-row-0-col-Join-button`);
+    expect(joinButton).toBeInTheDocument();
+
+    fireEvent.click(joinButton);
+
+    await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith('/courses/join/1'));
+
+  });
+
 
   test("Edit button navigates to the edit page for admin user", async () => {
 
