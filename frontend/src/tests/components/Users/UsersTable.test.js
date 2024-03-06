@@ -1,16 +1,41 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import UsersTable from "main/components/Users/UsersTable";
 import { formatTime } from "main/utils/dateUtils";
 import usersFixtures from "fixtures/usersFixtures";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { currentUserFixtures } from "fixtures/currentUserFixtures";
+
+const mockedNavigate = jest.fn();
+
+const mockToggleMutation = jest.fn();
+jest.mock('react-query', () => ({
+  ...jest.requireActual('react-query'),
+  useMutation: () => ({
+    mutate: mockToggleMutation,
+  }),
+}));
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockedNavigate
+}));
+
 
 describe("UserTable tests", () => {
     const queryClient = new QueryClient();
+    
+    const testId = "UsersTable";
+
+    const currentUser = currentUserFixtures.adminUser;
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
 
     test("renders without crashing for empty table", () => {
         render(
             <QueryClientProvider client={queryClient}>
-                <UsersTable users={[]} />
+                <UsersTable currentUser = { currentUser } users={[]} />
             </QueryClientProvider>
         );
     });
@@ -18,7 +43,7 @@ describe("UserTable tests", () => {
     test("renders without crashing for three users", () => {
         render(
             <QueryClientProvider client={queryClient}>
-                <UsersTable users={usersFixtures.threeUsers} />
+                <UsersTable currentUser = { currentUser } users={usersFixtures.threeUsers} />
             </QueryClientProvider>
         );
     });
@@ -26,7 +51,7 @@ describe("UserTable tests", () => {
     test("Has the expected column headers and content as admin user", () => {
         render(
             <QueryClientProvider client={queryClient}>
-                <UsersTable users={usersFixtures.threeUsers} showToggleButtons={true} />
+                <UsersTable currentUser = { currentUser } users={usersFixtures.threeUsers} showToggleButtons={true} />
             </QueryClientProvider>
         );
     
@@ -61,7 +86,7 @@ describe("UserTable tests", () => {
       test("Does not see toggle admin and instructor buttons as regular user", () => {
         render(
             <QueryClientProvider client={queryClient}>
-                <UsersTable users={usersFixtures.threeUsers}/>
+                <UsersTable currentUser = { currentUser } users={usersFixtures.threeUsers}/>
             </QueryClientProvider>
         );
     
@@ -81,5 +106,76 @@ describe("UserTable tests", () => {
 
         expect(screen.queryByText('toggle-admin')).not.toBeInTheDocument();
         expect(screen.queryByText('toggle-instructor')).not.toBeInTheDocument();
+      });
+
+      test("Confirmation popup does not appear when admin clicks other admin's toggle-admin button", async () => {
+        render(
+            <QueryClientProvider client={queryClient}>
+                <UsersTable currentUser = { currentUser } users={usersFixtures.threeUsers} showToggleButtons={true} />
+            </QueryClientProvider>
+        );
+    
+        // Mock window.confirm to return true, indicating user confirmation
+        window.confirm = jest.fn(() => false);
+    
+        // Find the toggle admin button and click it
+        const toggleAdminButton = screen.getByTestId(`${testId}-cell-row-0-col-toggle-admin-button`);
+        fireEvent.click(toggleAdminButton);
+
+        const prompt = "Are you sure you want to revoke your own Admin rights?\n\nClick 'OK' to confirm or 'Cancel' to keep your Admin rights active.";
+    
+        // Ensure that window.confirm was called with the appropriate message
+        expect(window.confirm).not.toHaveBeenCalledWith(prompt);
+    
+        // Ensure that the toggleAdminMutation function was called
+        expect(mockToggleMutation).toHaveBeenCalled();
+        
+      });
+
+      test("Confirmation popup appears when admin their own toggle-admin button", async () => {
+        render(
+            <QueryClientProvider client={queryClient}>
+                <UsersTable currentUser = { currentUser } users={usersFixtures.threeUsers} showToggleButtons={true} />
+            </QueryClientProvider>
+        );
+
+        // Find the toggle admin button and click it
+        const toggleAdminButton = screen.getByTestId(`${testId}-cell-row-3-col-toggle-admin-button`);
+        fireEvent.click(toggleAdminButton);
+    
+        window.confirm = jest.fn(() => true); // Mocking window.confirm to return true
+    
+        fireEvent.click(toggleAdminButton);
+    
+        const prompt = "Are you sure you want to revoke your own Admin rights?\n\nClick 'OK' to confirm or 'Cancel' to keep your Admin rights active.";
+    
+        // Ensure that window.confirm was called with the appropriate message
+        expect(window.confirm).toHaveBeenCalledWith(prompt);
+
+        expect(mockToggleMutation).toHaveBeenCalled();
+      });
+
+      test("mockToggleMutation is not called when admin does not confirm", async () => {
+        render(
+            <QueryClientProvider client={queryClient}>
+                <UsersTable currentUser = { currentUser } users={usersFixtures.threeUsers} showToggleButtons={true} />
+            </QueryClientProvider>
+        );
+    
+        // Mock window.confirm to return true, indicating user confirmation
+        window.confirm = jest.fn(() => false);
+    
+        // Find the toggle admin button and click it
+        const toggleAdminButton = screen.getByTestId(`${testId}-cell-row-3-col-toggle-admin-button`);
+        fireEvent.click(toggleAdminButton);
+
+        const prompt = "Are you sure you want to revoke your own Admin rights?\n\nClick 'OK' to confirm or 'Cancel' to keep your Admin rights active.";
+    
+        // Ensure that window.confirm was called with the appropriate message
+        expect(window.confirm).toHaveBeenCalledWith(prompt);
+    
+        // Ensure that the toggleAdminMutation function was called
+        expect(mockToggleMutation).not.toHaveBeenCalled();
+        
       });
 });
