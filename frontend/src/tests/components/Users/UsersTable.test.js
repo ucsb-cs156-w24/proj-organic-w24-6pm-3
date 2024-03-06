@@ -122,6 +122,7 @@ describe("UserTable tests", () => {
         const toggleAdminButton = screen.getByTestId(`${testId}-cell-row-0-col-toggle-admin-button`);
         fireEvent.click(toggleAdminButton);
 
+
         const prompt = "Are you sure you want to modify user's Admin rights?\n\nClick 'OK' to confirm or 'Cancel' to keep user's Admin rights active.";
     
         // Ensure that window.confirm was called with the appropriate message
@@ -147,6 +148,7 @@ describe("UserTable tests", () => {
     
         fireEvent.click(toggleAdminButton);
     
+
         const prompt = "Are you sure you want to modify your own Admin rights?\n\nClick 'OK' to confirm or 'Cancel' to keep your Admin rights active.";
     
         // Ensure that window.confirm was called with the appropriate message
@@ -169,6 +171,7 @@ describe("UserTable tests", () => {
         const toggleAdminButton = screen.getByTestId(`${testId}-cell-row-3-col-toggle-admin-button`);
         fireEvent.click(toggleAdminButton);
 
+
         const prompt = "Are you sure you want to modify your own Admin rights?\n\nClick 'OK' to confirm or 'Cancel' to keep your Admin rights active.";
     
         // Ensure that window.confirm was called with the appropriate message
@@ -178,6 +181,7 @@ describe("UserTable tests", () => {
         expect(mockToggleMutation).not.toHaveBeenCalled();
         
       });
+
 
       test("Confirmation popup appears when admin toggles toggle-instructor button", async () => {
         render(
@@ -249,4 +253,5 @@ describe("UserTable tests", () => {
         expect(mockToggleMutation).toHaveBeenCalled();
         
       });
+
 });
