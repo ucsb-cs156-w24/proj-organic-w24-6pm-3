@@ -29,7 +29,7 @@ export default function UsersTable({ currentUser, users, showToggleButtons = fal
     const toggleAdminCallback = async(cell) => { 
         if(currentUser.root.user.githubId === cell.row.values.githubId) {
             const confirmation = window
-                                .confirm("Are you sure you want to revoke your own Admin rights?\n\nClick 'OK' to confirm or 'Cancel' to keep your Admin rights active.");
+                                .confirm("Are you sure you want to modify your own Admin rights?\n\nClick 'OK' to confirm or 'Cancel' to keep your Admin rights active.");
             if (confirmation)
             {
                 toggleAdminMutation.mutate(cell);
@@ -37,7 +37,7 @@ export default function UsersTable({ currentUser, users, showToggleButtons = fal
         }
         else {
             const confirmation = window
-                                .confirm("Are you sure you want to revoke user's Admin rights?\n\nClick 'OK' to confirm or 'Cancel' to keep user's Admin rights active.");
+                                .confirm("Are you sure you want to modify user's Admin rights?\n\nClick 'OK' to confirm or 'Cancel' to keep user's Admin rights active.");
             if (confirmation)
             {
                 toggleAdminMutation.mutate(cell);
