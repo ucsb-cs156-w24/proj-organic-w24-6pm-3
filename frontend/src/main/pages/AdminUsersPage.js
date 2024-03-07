@@ -2,6 +2,7 @@ import React from "react";
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
 import UsersTable from "main/components/Users/UsersTable"
 import { useBackend } from "main/utils/useBackend";
+import { useCurrentUser } from "main/utils/currentUser";
 
 const AdminUsersPage = () => {
 
@@ -15,10 +16,12 @@ const AdminUsersPage = () => {
             []
         )
 
+    const {data: currentUser} = useCurrentUser();
+
     return (
         <BasicLayout>
             <h2>Users</h2>
-            <UsersTable users={users} showToggleButtons={true} />
+            <UsersTable currentUser = {currentUser} users={users} showToggleButtons={true} />
         </BasicLayout>
     );
 };

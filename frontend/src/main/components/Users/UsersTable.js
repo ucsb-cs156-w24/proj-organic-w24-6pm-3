@@ -2,8 +2,10 @@ import React from "react";
 import OurTable, { ButtonColumn } from "main/components/OurTable"
 import { formatTime } from "main/utils/dateUtils";
 import { useBackendMutation } from "main/utils/useBackend";
+//import { useCurrentUser } from "main/utils/currentUser";
 
-export default function UsersTable({ users, showToggleButtons = false }) {
+export default function UsersTable({ currentUser, users, showToggleButtons = false }) {
+    // const currentUser = useCurrentUser();
     // toggleAdmin
     function cellToAxiosParamsToggleAdmin(cell) {
         return {
@@ -23,8 +25,27 @@ export default function UsersTable({ users, showToggleButtons = false }) {
     );
     // Stryker restore all 
 
-    // Stryker disable next-line all : TODO try to make a good test for this
-    const toggleAdminCallback = async(cell) => { toggleAdminMutation.mutate(cell); }
+
+    // Stryker disable next-line all
+    const toggleAdminCallback = async(cell) => { 
+        if(currentUser.root.user.githubId === cell.row.values.githubId) {
+            const confirmation = window
+                                .confirm("Are you sure you want to modify your own Admin rights?\n\nClick 'OK' to confirm or 'Cancel' to keep your Admin rights active.");
+
+            if (confirmation)
+            {
+                toggleAdminMutation.mutate(cell);
+            } 
+        }
+        else {
+            const confirmation = window
+                                .confirm("Are you sure you want to modify user's Admin rights?\n\nClick 'OK' to confirm or 'Cancel' to keep user's Admin rights active.");
+            if (confirmation)
+            {
+                toggleAdminMutation.mutate(cell);
+            } 
+        }
+    }
 
     // toggleInstructor
     function cellToAxiosParamsToggleInstructor(cell) {
@@ -45,8 +66,14 @@ export default function UsersTable({ users, showToggleButtons = false }) {
     );
     // Stryker restore all 
 
-    // Stryker disable next-line all : TODO try to make a good test for this
-    const toggleInstructorCallback = async(cell) => { toggleInstructorMutation.mutate(cell); }
+    // Stryker disable next-line all
+    const toggleInstructorCallback = async(cell) => { 
+        const confirmation = window
+                            .confirm("Are you sure you want to modify Instructor role?\n\nClick 'OK' to confirm or 'Cancel' to keep current role.");
+        if (confirmation) {
+            toggleInstructorMutation.mutate(cell);
+        } 
+    }
 
     const columns = [
         {
