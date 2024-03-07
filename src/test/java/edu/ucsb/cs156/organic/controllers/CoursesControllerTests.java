@@ -243,7 +243,7 @@ public class CoursesControllerTests extends ControllerTestCase {
                 verify(courseRepository, times(1)).findById(eq(1L));
          }
 
-    @WithMockUser(roles = { "ADMIN", "USER", "INSTRUCTOR" }) //CHANGED
+    @WithMockUser(roles = { "ADMIN", "USER", "INSTRUCTOR" }) 
     @Test
     public void an_admin_user_can_post_a_new_course() throws Exception {
         // arrange
