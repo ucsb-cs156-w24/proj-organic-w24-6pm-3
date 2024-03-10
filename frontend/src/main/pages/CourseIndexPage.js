@@ -4,14 +4,14 @@ import { useBackend } from 'main/utils/useBackend';
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
 import CoursesTable from 'main/components/Courses/CoursesTable';
 import { Button } from 'react-bootstrap';
-import { useCurrentUser} from 'main/utils/currentUser';
+import { useCurrentUser , hasRole} from 'main/utils/currentUser'
 
 export default function CourseIndexPage() {
 
   const { data: currentUser } = useCurrentUser();
 
   const createButton = () => {  
-    
+    if (hasRole(currentUser, "ROLE_ADMIN") || hasRole(currentUser, "ROLE_INSTRUCTOR")) {
       return (
           <Button
               variant="primary"
@@ -21,7 +21,7 @@ export default function CourseIndexPage() {
               Create Course 
           </Button>
       )
-    
+    }
   }
   
   const { data: courses, error: _error, status: _status } =
