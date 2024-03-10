@@ -24,18 +24,25 @@ export default function UsersTable({ currentUser, users, showToggleButtons = fal
     );
     // Stryker restore all
 
-    // Stryker disable next-line all : TODO try to make a good test for this
+
+    // Stryker disable next-line all
     const toggleAdminCallback = async(cell) => { 
         if(currentUser.root.user.githubId === cell.row.values.githubId) {
             const confirmation = window
-                                .confirm("Are you sure you want to revoke your own Admin rights?\n\nClick 'OK' to confirm or 'Cancel' to keep your Admin rights active.");
+                                .confirm("Are you sure you want to modify your own Admin rights?\n\nClick 'OK' to confirm or 'Cancel' to keep your Admin rights active.");
+
             if (confirmation)
             {
                 toggleAdminMutation.mutate(cell);
             } 
         }
         else {
-            toggleAdminMutation.mutate(cell);
+            const confirmation = window
+                                .confirm("Are you sure you want to modify user's Admin rights?\n\nClick 'OK' to confirm or 'Cancel' to keep user's Admin rights active.");
+            if (confirmation)
+            {
+                toggleAdminMutation.mutate(cell);
+            } 
         }
     }
 
@@ -58,8 +65,14 @@ export default function UsersTable({ currentUser, users, showToggleButtons = fal
     );
     // Stryker restore all 
 
-    // Stryker disable next-line all : TODO try to make a good test for this
-    const toggleInstructorCallback = async(cell) => { toggleInstructorMutation.mutate(cell); }
+    // Stryker disable next-line all
+    const toggleInstructorCallback = async(cell) => { 
+        const confirmation = window
+                            .confirm("Are you sure you want to modify Instructor role?\n\nClick 'OK' to confirm or 'Cancel' to keep current role.");
+        if (confirmation) {
+            toggleInstructorMutation.mutate(cell);
+        } 
+    }
 
     const columns = [
         {
