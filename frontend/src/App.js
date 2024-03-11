@@ -33,11 +33,6 @@ function App() {
       <Route path="/courses" element={<CourseIndexPage />} />
     </>
   ) : null;
-  // const staffRoute = hasRole(currentUser, "ROLE_USER") ? (
-  //   <>
-  //     <Route path="/course/staff/all" element={<ProfilePage />} />
-  //   </>
-  // ) : null;
 
  
 
@@ -45,7 +40,6 @@ function App() {
     <>
       <Route path="/courses/create" element={<CoursesCreatePage />} />
       <Route path="/courses/edit/:id" element={<CoursesEditPage />} />
-      {/* <Route path="/course/staff/all" element={<StaffIndexPage />} /> */}
     </>
   ) : null;
 
