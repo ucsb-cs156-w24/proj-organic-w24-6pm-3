@@ -1,5 +1,4 @@
-import React from "react";
-import OurTable, { ButtonColumn } from "main/components/OurTable"
+import OurTable, { ButtonColumn } from "main/components/OurTable";
 import { formatTime } from "main/utils/dateUtils";
 import { useBackendMutation } from "main/utils/useBackend";
 //import { useCurrentUser } from "main/utils/currentUser";
@@ -23,7 +22,7 @@ export default function UsersTable({ currentUser, users, showToggleButtons = fal
         {},
         ["/api/admin/users"]
     );
-    // Stryker restore all 
+    // Stryker restore all
 
 
     // Stryker disable next-line all
@@ -112,7 +111,8 @@ export default function UsersTable({ currentUser, users, showToggleButtons = fal
     const buttonColumn = [
         ...columns,
         ButtonColumn("toggle-admin", "primary", toggleAdminCallback, "UsersTable"),
-        ButtonColumn("toggle-instructor", "primary", toggleInstructorCallback, "UsersTable")
+        ButtonColumn("toggle-instructor", "primary", toggleInstructorCallback, "UsersTable"),
+        
     ]
     return <OurTable
         data={users}
