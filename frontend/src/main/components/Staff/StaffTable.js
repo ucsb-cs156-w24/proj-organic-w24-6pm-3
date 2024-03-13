@@ -18,7 +18,7 @@ export default function StaffTable({ staff }) {
         {
             Header: 'userId',
             accessor: 'userId',
-        }
+        },
     ];
  
 
