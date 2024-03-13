@@ -68,36 +68,6 @@ describe("StaffTable tests", () => {
 
   });
 
-  test("renders empty table correctly", () => {
-
-    // arrange
-    const currentUser = currentUserFixtures.adminUser;
-
-
-    // act
-    render(
-        <QueryClientProvider client={queryClient}>
-          <MemoryRouter>
-          <StaffTable staff={[]} currentUser={currentUser} />
-        </MemoryRouter>
-      </QueryClientProvider>
-    );
-
-
-
-    // assert
-    expectedHeaders.forEach((headerText) => {
-      const header = screen.getByText(headerText);
-      expect(header).toBeInTheDocument();
-    });
-
-    expectedFields.forEach((field) => {
-      const fieldElement = screen.queryByTestId(`${testId}-cell-row-0-col-${field}`);
-      expect(fieldElement).not.toBeInTheDocument();
-    });
-  });
-
-
   test("Has the expected colum headers and content for adminUser", () => {
 
     const currentUser = currentUserFixtures.adminUser;
@@ -128,6 +98,38 @@ describe("StaffTable tests", () => {
 
 
   });
+
+  test("renders empty table correctly", () => {
+
+    // arrange
+    const currentUser = currentUserFixtures.adminUser;
+
+
+    // act
+    render(
+        <QueryClientProvider client={queryClient}>
+          <MemoryRouter>
+          <StaffTable staff={[]} currentUser={currentUser} />
+        </MemoryRouter>
+      </QueryClientProvider>
+    );
+
+
+
+    // assert
+    expectedHeaders.forEach((headerText) => {
+      const header = screen.getByText(headerText);
+      expect(header).toBeInTheDocument();
+    });
+
+    expectedFields.forEach((field) => {
+      const fieldElement = screen.queryByTestId(`${testId}-cell-row-0-col-${field}`);
+      expect(fieldElement).not.toBeInTheDocument();
+    });
+  });
+
+
+ 
 
 
 
