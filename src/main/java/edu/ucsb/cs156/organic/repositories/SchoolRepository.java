@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SchoolRepository extends CrudRepository<School, String> {
 
-   public Optional<School> findById(String abbrev);
+   public Optional<School> findById(String abbrev); //ID
 
 }

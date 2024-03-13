@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class School {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private String abbrev;
+  private String abbrev; //ID
 
   private String name;
   private String termRegex;

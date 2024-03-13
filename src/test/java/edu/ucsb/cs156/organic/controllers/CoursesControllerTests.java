@@ -244,7 +244,7 @@ public class CoursesControllerTests extends ControllerTestCase {
          }
 
 
-    @WithMockUser(roles = { "ADMIN", "INSTRUCTOR", "USER" }) 
+    @WithMockUser(roles = { "ADMIN", "INSTRUCTOR", "USER" }) //all users logged in
     @Test
     public void an_admin_user_can_post_a_new_course() throws Exception {
         // arrange
