@@ -4,7 +4,7 @@ import OurTable from "main/components/OurTable";
 
 export default function StaffTable({ staff }) {
 
-  // staff Table  
+    
 
     const columns = [
         {
